@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<title>en.infinipedia.org</title>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script>
+$(function() {
+
+var titles = [];
+
+function stock() {
+  $.ajax({
+    type: "get",
+    dataType: "jsonp",
+    url: "http://en.wikipedia.org/w/api.php?action=query&list=random&rnnamespace=0&rnlimit=10&format=json",
+    success: function(json) {
+      $.each(json.query.random, function(i, e) {
+        titles.push(e.title);
+      });
+      $(document.body).trigger('wikijump');
+      console.log(titles)
+    }
+  });
+}
+
+$(document.body).bind('wikijump', function() {
+  if (titles.length > 1) {
+    var title = titles.shift();
+    setTimeout(function() {
+      $('#wikiframe').attr('src', 'http://en.wikipedia.org/wiki/' + encodeURIComponent(title));
+      $(document.body).trigger('wikijump');
+      console.log(titles)
+    }, 8000);
+  } else {
+    stock();
+  }
+});
+
+stock();
+
+
+});
+</script>
+</head>
+<body>
+<iframe id="wikiframe" src="http://en.wikipedia.org/wiki/Special:Random" width="100%" height="100%"></iframe>
+</body>
+</html>
