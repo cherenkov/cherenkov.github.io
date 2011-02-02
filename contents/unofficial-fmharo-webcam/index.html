@@ -1,0 +1,236 @@
+<html>
+<head>
+<title>FmHaro!76.1 Unofficial Web CAMERA Beta</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script src="http://platform.twitter.com/anywhere.js?id=bve026s4N5wKdO77VEUOkA&v=1" type="text/javascript"></script>
+<script>
+$(function(){
+
+
+function setUserbox(T) {
+  var currentUser = T.currentUser;
+  var screenName = currentUser.data('screen_name');
+  var profileImage = currentUser.data('profile_image_url');
+  var profileImageTag = "<img src='" + profileImage + "'/>";
+  
+  $('#login-out_btn').replaceWith('<a href="http://twitter.com/" target="_blank">' + profileImageTag + ' ' + screenName + '</a>' + ' | ' + '<button id="signout" type="button">Logout</button>');
+
+  $("#signout").bind("click", function () {
+    twttr.anywhere.signOut();
+    
+    // リロード
+    location.reload();
+  });
+}
+
+
+  // ログインボタン
+  twttr.anywhere(function (T) {
+    if (T.isConnected()) {
+      setUserbox(T);
+
+    } else {
+      T("#login-out_btn").connectButton({
+        authComplete: function(user) {
+          setUserbox(T);
+        },
+        signOut: function() {
+          // triggered when user logs out
+          //alert("logout")
+        }
+      });
+    };
+  });
+
+
+  // tweet box
+  twttr.anywhere(function (T) {
+    var myDefaultContent = " #radioh";
+
+    T("#tbox").tweetBox({
+      height: 100,
+      width: 500,
+      defaultContent: myDefaultContent,
+      onTweet: function(plainTweet, htmlTweet){
+        var tweetBox = $('#tweet-box', this.iframe.node.contentDocument);
+        // hashTagとキャレット位置設定
+        tweetBox.val(myDefaultContent).attr("selectionEnd", 0).focus();
+      }
+    });
+  });
+
+
+  function loadWebcam() {
+    var newImgSrc = "http://www.fmharo.co.jp/up-on-camera/cam1.jpg?" + new Date().getTime();
+    $("#cap").attr("src", newImgSrc);
+  }
+  loadWebcam();
+
+  setInterval(function() {
+    loadWebcam();
+  }, 10000);
+
+
+
+  // 透過pngをIEでみるとひどい。
+  $("#me").click(function(e) {
+    if($("#baby").css("display") === "none")
+      e.preventDefault();
+    $("#baby").fadeIn(2000);
+  });
+
+  $("#baby").click(function() {
+    $(this).fadeOut(2000);
+  });
+
+});
+</script>
+<style type="text/css">
+h1 {
+  font-size: 25px;
+  color: #333333;
+}
+
+a {
+  color: #1D53D7;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+
+body {
+  background: chocolate repeat-x center url("haro_wallpaper.jpg");
+}
+
+#cap {
+  width: 480px;
+  height: 360px;
+  background: no-repeat center url("fmharo_loading.gif");
+}
+
+table {
+  border: 2px solid lightseagreen;
+  background: white;
+}
+
+a.profile-pic {
+  text-decoration: none;
+}
+
+.thumb img {
+  width: 24px;
+  height: 24px;
+  border: none;
+}
+
+.entry-meta, .entry-meta a {
+  color: #999999;
+  font-size: 10px;
+}
+
+#header {
+  overflow: hidden;
+}
+
+#header h1 {
+  float: left;
+}
+
+#userbox {
+  float: right;
+}
+
+#userbox img {
+  border: none;
+}
+
+#footer_body {
+  position: absolute;
+}
+
+#baby {
+  display: none;
+  position: absolute;
+  left: 52px;
+  top: -170px;
+}
+
+#me {
+  outline: none;
+}
+</style>
+</head>
+<body>
+<div id="container">
+<div id="header">
+<h1>
+<a href="http://www.fmharo.co.jp/">FmHaro!76.1</a>
+</h1>
+<div id="userbox">
+<span id="login-out_btn"></span>
+</div>
+</div>
+<div id="tbox"></div>
+<table>
+<tbody>
+<tr>
+<td id="content">
+<div id="studio_cam">
+<img id="cap">
+</div>
+</td>
+<td id="side_base">
+<div id="twidget">
+
+<script src="http://widgets.twimg.com/j/2/widget.js"></script>
+<script>
+new TWTR.Widget({
+  version: 2,
+  type: 'search',
+  search: '#radioH OR #FmHaro OR #fmharo OR #fmhelo OR #fmhero OR #fmhalo OR #radioh -from:heaven_shizuoka',
+  interval: 6000,
+  title: '#radioh #fmharoを含むtweets',
+  subject: '合い言葉は「えっちほー」',
+  width: 260,
+  height: 270,
+  theme: {
+    shell: {
+      background: '#8ec1da',
+      color: '#ffffff'
+    },
+    tweets: {
+      background: '#ffffff',
+      color: '#444444',
+      links: '#1985b5'
+    }
+  },
+  features: {
+    scrollbar: true,
+    loop: false,
+    live: true,
+    hashtags: true,
+    timestamp: true,
+    avatars: true,
+    toptweets: true,
+    behavior: 'all'
+  }
+}).render().start();
+</script>
+
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<div id="footer">
+<span id="footer_body">
+made by <a id="me" href="http://twitter.com/cherenkov" target="_blank">@cherenkov</a><img id="baby" src="radiobaby.png">
+</span>
+</div>
+</div>
+</body>
+</html>
