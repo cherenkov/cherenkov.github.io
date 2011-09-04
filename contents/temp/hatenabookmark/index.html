@@ -2,8 +2,19 @@
 <head>
 <meta charset="utf-8">
 <title></title>
+<script>
+onload = function() {
+setInterval(function() {
+    document.getElementById('output').value = document.getElementById('contents').innerHTML;
+}, 1000);
+}
+</script>
 </head>
 <body>
+<div id="contents">
 <a id="link" href="otakara.html">otakara</a>
+</div>
+<br>
+<textarea id="output"></textarea>
 </body>
 </html>
