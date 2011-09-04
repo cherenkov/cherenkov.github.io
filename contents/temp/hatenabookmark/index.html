@@ -7,6 +7,13 @@ onload = function() {
 setInterval(function() {
     document.getElementById('output').value = document.getElementById('contents').innerHTML;
 }, 1000);
+
+setInterval(function() {
+    var time = document.createElement('span');
+    time.textContent = Date.now() + ',';
+    document.getElementById('footer').appendChild(time);
+}, 800);
+
 }
 </script>
 </head>
@@ -16,5 +23,6 @@ setInterval(function() {
 </div>
 <br>
 <textarea id="output" style="width:100%;height:70%;"></textarea>
+<div id="footer" style="width:500px;overflow-x:scroll;"></div>
 </body>
 </html>
