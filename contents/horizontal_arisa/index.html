@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>ありっさ水平器</title>
+	<link rel="stylesheet" href="">
+	<style type="text/css">
+		#main_img {
+			width: 100%;
+			/*transform: rotate(10deg);*/
+		}
+	</style>
+</head>
+<body>
+	<img id="main_img" src="arisa.jpg">
+	
+	<br><br><br>
+	<input type="file" multiple id="file">
+	<div id="output"></div>
+
+	<script type="text/javascript">
+		window.addEventListener('deviceorientation', function(e) {
+		  // e.alpha, e.beta, e.gamma で傾きを取得
+		  document.getElementById("main_img").style.transform = 'rotate(' + e.gamma  + 'deg)';
+		});
+
+		// ファイルが選択されたらイベントを実行する
+		document.getElementById( "file" ).addEventListener( "change", function() {
+			// フォームで選択された全ファイルを取得
+			var fileList = this.files;
+
+			// Blob URLの作成
+			var blobUrl = window.URL.createObjectURL( fileList[0]);
+
+			// HTMLに書き出し (src属性にblob URLを指定)
+			document.getElementById( "main_img" ).src = blobUrl;
+		}) ;
+	</script>
+</body>
+</html>
